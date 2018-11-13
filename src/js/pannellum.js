@@ -2106,7 +2106,7 @@ function toggleFullscreen() {
  * @private
  */
 function onFullScreenChange() {
-    if (document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement) {
+    if (isInFullscreenMode()) {
         controls.fullscreen.classList.add('pnlm-fullscreen-toggle-button-active');
         fullscreenActive = true;
     } else {
@@ -2118,6 +2118,13 @@ function onFullScreenChange() {
     renderer.resize();
     setHfov(config.hfov);
     animateInit();
+}
+
+function isInFullscreenMode() {
+    return !!(document.fullscreenElement
+        || document.webkitFullscreenElement
+        || document.mozFullScreenElement
+        || document.msFullscreenElement);
 }
 
 /**
