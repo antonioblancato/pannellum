@@ -479,10 +479,11 @@ function onImageLoad() {
         if (config.doubleClickZoom) {
             dragFix.addEventListener('dblclick', onDocumentDoubleClick, false);
         }
-        uiContainer.addEventListener('mozfullscreenchange', onFullScreenChange, false);
-        uiContainer.addEventListener('webkitfullscreenchange', onFullScreenChange, false);
-        uiContainer.addEventListener('msfullscreenchange', onFullScreenChange, false);
-        uiContainer.addEventListener('fullscreenchange', onFullScreenChange, false);
+        document.addEventListener('mozfullscreenchange', onFullScreenChange, false);
+        document.addEventListener('webkitfullscreenchange', onFullScreenChange, false);
+        document.addEventListener('msfullscreenchange', onFullScreenChange, false);
+        document.addEventListener('fullscreenchange', onFullScreenChange, false);
+
         window.addEventListener('resize', onDocumentResize, false);
         window.addEventListener('orientationchange', onDocumentResize, false);
         if (!config.disableKeyboardCtrl) {
@@ -3037,10 +3038,10 @@ this.destroy = function() {
         document.removeEventListener('mouseup', onDocumentMouseUp, false);
         container.removeEventListener('mousewheel', onDocumentMouseWheel, false);
         container.removeEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
-        container.removeEventListener('mozfullscreenchange', onFullScreenChange, false);
-        container.removeEventListener('webkitfullscreenchange', onFullScreenChange, false);
-        container.removeEventListener('msfullscreenchange', onFullScreenChange, false);
-        container.removeEventListener('fullscreenchange', onFullScreenChange, false);
+        document.removeEventListener('mozfullscreenchange', onFullScreenChange, false);
+        document.removeEventListener('webkitfullscreenchange', onFullScreenChange, false);
+        document.removeEventListener('msfullscreenchange', onFullScreenChange, false);
+        document.removeEventListener('fullscreenchange', onFullScreenChange, false);
         window.removeEventListener('resize', onDocumentResize, false);
         window.removeEventListener('orientationchange', onDocumentResize, false);
         container.removeEventListener('keydown', onDocumentKeyPress, false);
