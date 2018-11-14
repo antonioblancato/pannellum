@@ -2106,7 +2106,7 @@ function toggleFullscreen() {
  * @private
  */
 function onFullScreenChange() {
-    if (isInFullscreenMode()) {
+    if (isInFullscreen()) {
         controls.fullscreen.classList.add('pnlm-fullscreen-toggle-button-active');
         fullscreenActive = true;
     } else {
@@ -2114,17 +2114,31 @@ function onFullScreenChange() {
         fullscreenActive = false;
     }
     fireEvent('fullscreenchange', fullscreenActive);
-    // Resize renderer (deal with browser quirks and fixes #155)
-    renderer.resize();
-    setHfov(config.hfov);
-    animateInit();
+    adaptToViewport();
 }
 
-function isInFullscreenMode() {
+/**
+ * Check whether the document is in fullscreen mode
+ * @private
+ */
+function isInFullscreen() {
+    // using the *fullscreenElement property because:
+    // https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#Obsolete_properties
     return !!(document.fullscreenElement
         || document.webkitFullscreenElement
         || document.mozFullScreenElement
         || document.msFullscreenElement);
+}
+
+/**
+ * Perform operation needed on viewport changes
+ * @private
+ */
+function adaptToViewport() {
+    // Resize renderer (deal with browser quirks and fixes #155)
+    renderer.resize();
+    setHfov(config.hfov);
+    animateInit();
 }
 
 /**
@@ -3023,9 +3037,10 @@ this.off = function(type, listener) {
  */
 function fireEvent(type) {
     if (type in externalEventListeners) {
-        // Reverse iteration is useful, if event listener is removed inside its definition
-        for (var i = externalEventListeners[type].length; i > 0; i--) {
-            externalEventListeners[type][externalEventListeners[type].length - i].apply(null, [].slice.call(arguments, 1));
+        var listenersToEventType = externalEventListeners[type];
+        while (listenersToEventType.length > 0) {
+            var cb = listenersToEventType.pop();
+            cb.apply(null, [].slice.call(arguments, 1));
         }
     }
 }
